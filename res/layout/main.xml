@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+	<LinearLayout android:id="@+id/footer" android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" android:orientation="horizontal"
+	    android:layout_alignParentBottom="true" style="@android:style/ButtonBar">
+	
+	    <Button
+	        android:id="@+id/shareButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:onClick="shareVia"
+	        android:text="@string/menu_about" />
+	
+	    <Button android:id="@+id/startButton" android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" android:layout_weight="1"
+	        android:onClick="startrun"
+	        android:text="@string/menu_start" />
+	</LinearLayout>
+
+	<TextView
+	    android:id="@+id/editText1"
+	    android:inputType="none"
+	    android:textSize ="24sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_marginTop="21dp"
+	    android:ems="10" 
+	    android:text="@string/run_condition"
+	    >	   
+
+	    <requestFocus />
+	</TextView>
+
+	<TextView
+	    android:id="@+id/editText2"
+	    android:inputType="none"
+	    android:textSize ="22sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/editText1"
+	    android:layout_marginLeft="20dp"
+	    android:text="@string/run_condition_1"
+	    android:ems="10" />
+
+	<TextView
+	    android:id="@+id/editText3"
+	    android:inputType="none"
+	    android:textSize ="22sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/editText2"
+	    android:layout_marginLeft="20dp"
+	    android:text="@string/run_condition_2"
+	    android:ems="10" />
+
+	<TextView
+	    android:id="@+id/editText4"
+	    android:inputType="none"
+	    android:textSize ="22sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/editText3"
+	    android:layout_marginLeft="20dp"
+	    android:text="@string/run_condition_3"
+	    android:ems="10" />
+
+	<TextView
+	    android:id="@+id/statusTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:gravity="center"
+	    android:layout_below="@+id/editText4"
+	    android:layout_marginTop="40dp"
+	    android:ems="10" />
+	
+	<WebView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/webView" android:layout_gravity="center" android:visibility="gone"/>
+
+</RelativeLayout>

@@ -67,7 +67,7 @@ public class ExitService extends IntentService {
             sendBroadcast(new ExitedIntent());
             //MainActivity.clearNotification(this);
         } finally {
-            Twittrouter.isReady = false;
+            Twittrouter.isServerRunning = false;
         }
     }
 

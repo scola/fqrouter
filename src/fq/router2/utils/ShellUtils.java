@@ -191,6 +191,12 @@ public class ShellUtils {
     
 	public static void executeTwittrouter() {
 		try {
+        	kill();
+        } catch (Exception e) {
+            LogUtils.e("failed to kill manager process", e);
+        }
+		
+		try {
 			ShellUtils.sudo(PYTHON_LAUNCHER.getAbsolutePath(),MANAGER_MAIN_PY.getAbsolutePath());
 		} catch (Exception e) {
 			LogUtils.e("the phone is not rooted ", e);
@@ -234,7 +240,7 @@ public class ShellUtils {
         try {
             String output;         
             output = ShellUtils.execute(ShellUtils.findCommand("ps"));            
-            if (output.contains(Uri)) {
+            if (output.lastIndexOf(Uri) != output.indexOf(Uri)) {
                 return true;
             } else {
                 return false;

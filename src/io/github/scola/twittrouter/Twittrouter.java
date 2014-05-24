@@ -17,7 +17,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 import android.view.*;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import fq.router2.utils.ApkUtils;
-import fq.router2.utils.DnsUtils;
 import fq.router2.utils.HttpUtils;
 import fq.router2.utils.ShellUtils;
 import fq.router2.utils.LogUtils;
@@ -48,20 +46,29 @@ public class Twittrouter extends Activity implements
 	private final static int ITEM_ID_EXIT = 1;	
     public final static int SHOW_AS_ACTION_IF_ROOM = 1;
     
-    public static boolean isReady;
+    public static boolean isServerRunning;
     private String upgradeUrl;
 	
 	
 	private Handler handler = new Handler() {
 		public void handleMessage(Message message) {
-			Bundle data = message.getData();
-			if (message.arg1 == Activity.RESULT_OK && data != null) {
+			if (message.arg1 == Activity.RESULT_OK) {
 				Log.i(TAG, "deploy success");
-				isReady = true;
-				String deployresult = data.getString("deploy");
-				Toast.makeText(Twittrouter.this, deployresult,
-						Toast.LENGTH_LONG).show();
-				
+				isServerRunning = true;
+				//runTwittrouter();
+				/*
+				*/
+				if(ShellUtils.exists()) {
+					checkServerRunning();
+				} else {
+					runTwittrouter();
+					try {
+			            Thread.sleep(2000);
+			        } catch (InterruptedException e) {
+			            throw new RuntimeException(e);
+			        }
+				}
+								
 			} else {
 				Toast.makeText(Twittrouter.this, "deploy failed.",
 						Toast.LENGTH_LONG).show();
@@ -120,8 +127,47 @@ public class Twittrouter extends Activity implements
     @Override
     protected void onResume() {
         super.onResume();
-        //loadWebView();
-        //showWebView();        
+        if(isServerRunning){
+        	checkServerRunning();        	
+        } else {
+        	runTwittrouter();
+        }        
+    }
+    
+    private void checkServerRunning() {
+        if(isServerRunning){
+        	new Thread(new Runnable() {
+                @Override
+                public void run() {
+                	try {
+                    	String content = HttpUtils.get("http://127.0.0.1:8888/echo");
+                    	if(content.contains("helloworld")) {
+                    		isServerRunning = true;
+                    	}
+                    		
+                    	LogUtils.i("Echo" + content);
+                    }  catch (Exception e) {
+                    	LogUtils.e("Server is not running", e);
+                    	runTwittrouter();
+                    }
+                }
+            }).start();          	
+        } 
+    }
+    
+    private void runTwittrouter() {
+    	if(ShellUtils.isRooted() && ShellUtils.exists("fq.router2/python/bin/python")){
+        	new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                    	ShellUtils.executeTwittrouter();
+                    } catch (Exception e) {
+                        LogUtils.e("failed to execute twittrouter");
+                    }
+                }
+            }).start();        	
+        }
     }
     
     @Override
@@ -161,7 +207,7 @@ public class Twittrouter extends Activity implements
     @Override
     public void onExiting() {
         //displayNotification(this, _(R.string.status_exiting));
-        isReady = false;
+    	isServerRunning = false;
         /*
         ActivityCompat.invalidateOptionsMenu(this);
         findViewById(R.id.webView).setVisibility(View.GONE);
@@ -256,13 +302,8 @@ public class Twittrouter extends Activity implements
 	}
 
 	public void startrun(View view) {
-		Toast.makeText(this, "Still interactive", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "Still interactive", Toast.LENGTH_SHORT).show();
 		try {			
-			//ShellUtils.kill();  //test kill
-			//loadWebView();
-			//showWebView();
-			//String versionInfo = DnsUtils.resolveTXT("prod.android.ver.fqrouter.com");
-			//String latestVersion = versionInfo.split("\\|")[0];
 			if (!ShellUtils.isRooted()){
 				if(appInstalledOrNot(fqrouter)){
 					Toast.makeText(Twittrouter.this, "Your device is not rooted,but this app need root promission",
@@ -272,9 +313,13 @@ public class Twittrouter extends Activity implements
 					onUpdateFound(upgradeUrl);
 				}
 			} else {
+				if(!appInstalledOrNot(fqrouter)) {
+					String upgradeUrl = "http://dl.geekcantalk.com/2.11.2.apk";
+					onUpdateFound(upgradeUrl);
+				}
 				if (!(appRunningOrNot(fqrouter) || ShellUtils.exists("fq.router2/python/bin/python"))) {
 					popupRunFqrouterAlert();
-				} else if(isReady) {
+				} else if(isServerRunning) {
 					loadWebView();
 					showWebView();
 				}
@@ -353,7 +398,7 @@ public class Twittrouter extends Activity implements
         if (Build.VERSION.SDK_INT < 14) {
             return;
         }
-        if(isReady == true || ShellUtils.exists()) {
+        if(isServerRunning == true) {
 			findViewById(R.id.startButton).setVisibility(View.GONE);
 			findViewById(R.id.shareButton).setVisibility(View.GONE);
 			findViewById(R.id.webView).setVisibility(View.VISIBLE);
@@ -364,7 +409,7 @@ public class Twittrouter extends Activity implements
         if (Build.VERSION.SDK_INT < 14) {
             return;
         }
-        if(isReady == true || ShellUtils.exists()) {
+        if(isServerRunning == true) {
 	        WebView webView = (WebView) findViewById(R.id.webView);
 	        webView.getSettings().setJavaScriptEnabled(true);
 	        webView.getSettings().setAppCacheEnabled(false);

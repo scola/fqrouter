@@ -119,16 +119,11 @@ public class DeployService extends IntentService {
 	// Will be called asynchronously be Android
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		if(ShellUtils.exists()) {
-			return;
-		}
-		else if(Twittrouter.isReady) {
-			ShellUtils.executeTwittrouter();
-			return;
-		}
 		
-		ShellUtils.checkRooted();
-		
+		if(!ShellUtils.exists()) {
+			ShellUtils.checkRooted();
+		}
+				
 		boolean foundPayloadUpdate = false;
         try {
             foundPayloadUpdate = shouldDeployPayload();
@@ -175,9 +170,6 @@ public class DeployService extends IntentService {
 			Messenger messenger = (Messenger) extras.get("MESSENGER");
 			Message msg = Message.obtain();
 			msg.arg1 = result;
-			Bundle bundle = new Bundle();
-			bundle.putString("deploy", "deploy succuss");
-			msg.setData(bundle);
 			try {
 				Log.i(TAG, "send msg");
 				messenger.send(msg);
@@ -186,6 +178,6 @@ public class DeployService extends IntentService {
 			}
 		}
 		
-		ShellUtils.executeTwittrouter();		
+		//ShellUtils.executeTwittrouter();		
 	}
 }

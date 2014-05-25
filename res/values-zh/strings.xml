@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">加推友</string>
+    <string name="menu_exit">退出</string>
+    <string name="status_download_failed">下载失败</string>
+    <string name="upgrade_via_browser_hint">打开浏览器手动升级</string>
+    <string name="status_downloaded">下载了</string>
+    <string name="new_version_alert_yes">好的</string>
+    <string name="status_downloading">正在下载</string>
+    <string name="new_version_alert_no">不好</string>
+    <string name="fqrouter_not_install_alert_title">fqrouter未安装</string>
+    <string name="fqrouter_not_install_alert_message">现在安装?</string>
+    <string name="fqrouter_not_run_alert_title">fqrouter未启动</string>
+    <string name="fqrouter_not_run_alert_message">现在运行?</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_start">启动</string>
+    <string name="run_condition">运行条件</string>
+    <string name="run_condition_1">1.设备已root</string>
+    <string name="run_condition_2">2.运行fqrouter</string>
+    <string name="run_condition_3">3.开启便携式热点</string>
+    <string name="fqrouter_not_install_or_root_alert_message">设备未root,所以不能使用此应用,但是翻墙路由器可以帮你翻墙,现在安装么?</string>
+    <string name="about_page">file:///android_asset/pages/about-cn.html</string>
+    <string name="about_info_title">Twittrouter %s</string>
+    <string name="about_info_share">分享</string>
+    <string name="share_subject">邀请的身边好友来到twitter</string>
+        <string name="share_content">
+        手机开个热点,再运行Twittrouter这个应用,可以邀请连接你Wi-Fi的朋友来到twitter http://crater.herokuapp.com/uploads/twittrouter.apk
+    </string>
+    <string name="share_channel">用什么方式发送？</string>
+    <string name="about_info_close">关闭</string>
+    
+</resources>

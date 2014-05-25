@@ -190,6 +190,7 @@ public class ShellUtils {
     }
     
 	public static void executeTwittrouter() {
+		LogUtils.i("execute Twittrouter");
 		try {
         	kill();
         } catch (Exception e) {

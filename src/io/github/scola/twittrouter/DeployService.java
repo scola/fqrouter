@@ -123,7 +123,7 @@ public class DeployService extends IntentService {
 		if(!ShellUtils.exists()) {
 			ShellUtils.checkRooted();
 		}
-				
+		Log.i(TAG, "the phone root status: " + ShellUtils.isRooted());		
 		boolean foundPayloadUpdate = false;
         try {
             foundPayloadUpdate = shouldDeployPayload();

@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -134,6 +136,20 @@ public class Twittrouter extends Activity implements
         }        
     }
     
+    public static String getMyVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            if (null == packageInfo.versionName) {
+                return "Unknown";
+            } else {
+                return packageInfo.versionName;
+            }
+        } catch (Exception e) {
+            LogUtils.e("failed to get package info", e);
+            return "Unknown";
+        }
+    }
+    
     private void checkServerRunning() {
         if(isServerRunning){
         	new Thread(new Runnable() {
@@ -141,8 +157,8 @@ public class Twittrouter extends Activity implements
                 public void run() {
                 	try {
                     	String content = HttpUtils.get("http://127.0.0.1:8888/echo");
-                    	if(content.contains("helloworld")) {
-                    		isServerRunning = true;
+                    	if(!content.contains("helloworld")) {
+                    		runTwittrouter();
                     	}
                     		
                     	LogUtils.i("Echo" + content);
@@ -269,7 +285,7 @@ public class Twittrouter extends Activity implements
             }
         });
         new AlertDialog.Builder(this)
-                .setTitle(R.string.about_info_title)
+                .setTitle(String.format(_(R.string.about_info_title), getMyVersion(this)))
                 .setCancelable(false)
                 .setPositiveButton(R.string.about_info_share, new DialogInterface.OnClickListener() {
                     @Override
@@ -303,7 +319,11 @@ public class Twittrouter extends Activity implements
 
 	public void startrun(View view) {
 		//Toast.makeText(this, "Still interactive", Toast.LENGTH_SHORT).show();
-		try {			
+		try {
+			if (!ShellUtils.isRooted()){
+				ShellUtils.checkRooted();
+			}
+			
 			if (!ShellUtils.isRooted()){
 				if(appInstalledOrNot(fqrouter)){
 					Toast.makeText(Twittrouter.this, "Your device is not rooted,but this app need root promission",

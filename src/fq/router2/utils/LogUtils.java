@@ -12,7 +12,7 @@ public class LogUtils {
     public static String e(String msg) {
         try {
             try {
-                Log.e("fqrouter", msg);
+                Log.e("twittrouter", msg);
                 writeLogFile("ERROR", msg);
             } catch (Exception e) {
                 System.out.println(msg);
@@ -27,7 +27,7 @@ public class LogUtils {
     public static String e(String msg, Throwable exception) {
         try {
             try {
-                Log.e("fqrouter", msg, exception);
+                Log.e("twittrouter", msg, exception);
                 writeLogFile("ERROR", msg + "\r\n" + formatException(exception));
             } catch (Exception e) {
                 System.out.println(msg);
@@ -51,7 +51,7 @@ public class LogUtils {
     public static void i(String msg) {
         try {
             try {
-                Log.i("fqrouter", msg);
+                Log.i("twittrouter", msg);
                 writeLogFile("INFO", msg);
             }  catch (Exception e) {
                 System.out.println(msg);
@@ -62,26 +62,7 @@ public class LogUtils {
     }
 
     private static void writeLogFile(String level, String line) {
-        if (logFile == null) {
-            logFile = new File("/data/data/fq.router2/log/current-java.log");
-            if (logFile.length() > 1024 * 1024) {
-                logFile.delete();
-            }
-        }
-        try {
-            FileOutputStream outputStream = new FileOutputStream(logFile, true);
-            try {
-                OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-                try {
-                    writer.write(new Date() + " " + level + " " + line + "\r\n");
-                } finally {
-                    writer.close();
-                }
-            } finally {
-                outputStream.close();
-            }
-        } catch (Exception e) {
-            Log.e("fqrouter", "failed to write log file", e);
-        }
+    	Log.e("twittrouter", "skip to save log");
+    	return;       
     }
 }

@@ -4,6 +4,7 @@ import io.github.scola.twittrouter.R;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,7 +43,7 @@ public class Twittrouter extends Activity implements
 	HandleFatalErrorIntent.Handler,
 	ExitingIntent.Handler,
 	ExitedIntent.Handler{
-	private static final String TAG = "Twittrouter";
+	private static final String TAG = "twittrouter";
 	private static final String fqrouter = "fq.router2";
 	private boolean downloaded;
 	private final static int ITEM_ID_EXIT = 1;	
@@ -129,11 +130,11 @@ public class Twittrouter extends Activity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if(isServerRunning){
+        if(ShellUtils.exists()){
         	checkServerRunning();        	
         } else {
         	runTwittrouter();
-        }        
+        }
     }
     
     public static String getMyVersion(Context context) {
@@ -172,7 +173,7 @@ public class Twittrouter extends Activity implements
     }
     
     private void runTwittrouter() {
-    	if(ShellUtils.isRooted() && ShellUtils.exists("fq.router2/python/bin/python")){
+    	if(ShellUtils.isRooted() && ShellUtils.exists(fqrouter)){
         	new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -180,6 +181,7 @@ public class Twittrouter extends Activity implements
                     	ShellUtils.executeTwittrouter();
                     } catch (Exception e) {
                         LogUtils.e("failed to execute twittrouter");
+                        isServerRunning = false;
                     }
                 }
             }).start();        	
@@ -224,18 +226,20 @@ public class Twittrouter extends Activity implements
     public void onExiting() {
         //displayNotification(this, _(R.string.status_exiting));
     	isServerRunning = false;
-        /*
-        ActivityCompat.invalidateOptionsMenu(this);
+        
+        //ActivityCompat.invalidateOptionsMenu(this);
+        
         findViewById(R.id.webView).setVisibility(View.GONE);
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
-        findViewById(R.id.hintTextView).setVisibility(View.GONE);
-        findViewById(R.id.fullPowerButton).setVisibility(View.GONE);
-        findViewById(R.id.statusTextView).setVisibility(View.VISIBLE);
-        TextView statusTextView = (TextView) findViewById(R.id.statusTextView);
-        statusTextView.setText(_(R.string.status_exiting));
-        */
+        findViewById(R.id.footer).setVisibility(View.GONE);
+        findViewById(R.id.editText1).setVisibility(View.GONE);
+        findViewById(R.id.editText2).setVisibility(View.GONE);
+        findViewById(R.id.editText3).setVisibility(View.GONE);
+        findViewById(R.id.editText4).setVisibility(View.GONE);
+        findViewById(R.id.statusTextView).setVisibility(View.GONE);
+        findViewById(R.id.exiting).setVisibility(View.VISIBLE);
+        TextView exitTextView = (TextView) findViewById(R.id.exiting);
+        exitTextView.setTextColor(Color.RED);
     }
-    
     @Override
     public void onExited() {
         //clearNotification(this);
@@ -326,22 +330,36 @@ public class Twittrouter extends Activity implements
 			
 			if (!ShellUtils.isRooted()){
 				if(appInstalledOrNot(fqrouter)){
-					Toast.makeText(Twittrouter.this, "Your device is not rooted,but this app need root promission",
+					Toast.makeText(Twittrouter.this, _(R.string.device_not_root),
 							Toast.LENGTH_LONG).show();
-				} else {
+				} else if(isDownloadServiceRunning() == false) {
 					String upgradeUrl = "http://dl.geekcantalk.com/2.11.2.apk";
 					onUpdateFound(upgradeUrl);
+				} else {
+					Toast.makeText(Twittrouter.this, _(R.string.wait_downloading_fqrouter),
+							Toast.LENGTH_SHORT).show();
 				}
 			} else {
 				if(!appInstalledOrNot(fqrouter)) {
-					String upgradeUrl = "http://dl.geekcantalk.com/2.11.2.apk";
-					onUpdateFound(upgradeUrl);
+					if(isDownloadServiceRunning() == false) {
+						String upgradeUrl = "http://dl.geekcantalk.com/2.11.2.apk";
+						onUpdateFound(upgradeUrl);
+					}else {
+						Toast.makeText(Twittrouter.this, _(R.string.wait_downloading_fqrouter),
+								Toast.LENGTH_SHORT).show();
+					}					
 				}
-				if (!(appRunningOrNot(fqrouter) || ShellUtils.exists("fq.router2/python/bin/python"))) {
+				if (!ShellUtils.exists(fqrouter)) {
 					popupRunFqrouterAlert();
 				} else if(isServerRunning) {
-					loadWebView();
-					showWebView();
+					if (Build.VERSION.SDK_INT < 14) {
+	                    Uri uri = Uri.parse("http://127.0.0.1:8888/config");
+	                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+	                } else {
+	                	loadWebView();
+						showWebView();
+	                }
+					
 				}
 			}			
             
@@ -475,5 +493,15 @@ public class Twittrouter extends Activity implements
             }
         }
     	return false;
+    }
+    
+    private boolean isDownloadServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (DownloadService.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

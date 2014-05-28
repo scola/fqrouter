@@ -24,10 +24,13 @@
     <string name="about_info_title">Twittrouter %s</string>
     <string name="about_info_share">分享</string>
     <string name="share_subject">邀请的身边好友来到twitter</string>
-        <string name="share_content">
-        手机开个热点,再运行Twittrouter这个应用,可以邀请连接你Wi-Fi的朋友来到twitter http://crater.herokuapp.com/uploads/twittrouter.apk
+    <string name="share_content">
+        手机开个热点,再运行twittrouter这个应用,可以邀请连接你Wi-Fi的朋友来到twitter,因为此Wi-Fi必须通过twitter好友认证才能无限制使用 ,下载试试吧 http://crater.herokuapp.com/uploads/twittrouter.apk
     </string>
     <string name="share_channel">用什么方式发送？</string>
     <string name="about_info_close">关闭</string>
+    <string name="device_not_root">你的设备没有root,这个应用需要root权限才能使用</string>
+    <string name="wait_downloading_fqrouter">正在下载fqrouter,请耐心等待下载完成</string>
+    <string name="status_exiting">正在退出...</string>
     
 </resources>

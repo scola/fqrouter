@@ -84,6 +84,18 @@ android:layout_height="fill_parent"
 	    android:layout_marginTop="40dp"
 	    android:ems="10" />
 	
+	<TextView
+	    android:id="@+id/exiting"  
+	    android:inputType="none"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent" 
+	    android:gravity="center"
+	    android:textSize ="20sp"
+	    android:visibility="gone"
+	    android:text="@string/status_exiting"
+	    android:ems="10"
+	/>
+	
 	<WebView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

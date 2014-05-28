@@ -198,7 +198,12 @@ public class ShellUtils {
         }
 		
 		try {
-			ShellUtils.sudo(PYTHON_LAUNCHER.getAbsolutePath(),MANAGER_MAIN_PY.getAbsolutePath());
+			if (new File("/data/data/fq.router2/busybox").exists()) {
+				ShellUtils.sudo("/data/data/fq.router2/busybox", "sh", PYTHON_LAUNCHER.getAbsolutePath(), MANAGER_MAIN_PY.getAbsolutePath());
+			} else {
+				ShellUtils.sudo(PYTHON_LAUNCHER.getAbsolutePath(),MANAGER_MAIN_PY.getAbsolutePath());
+			}
+			
 		} catch (Exception e) {
 			LogUtils.e("the phone is not rooted ", e);
             //result = Activity.RESULT_CANCELED;

@@ -24,10 +24,13 @@
     <string name="about_info_title">Twittrouter %s</string>
     <string name="about_info_share">Share</string>
     <string name="share_subject">Invite your friends to twitter</string>
-        <string name="share_content">
+    <string name="share_content">
         Start Wi-Fi hotspot on you android device,you can invite other people who connect your Wi-FI to twitter.Please try this App twittrouter http://crater.herokuapp.com/uploads/twittrouter.apk
     </string>
     <string name="share_channel">How do you want to share?</string>
     <string name="about_info_close">Close</string>
+    <string name="device_not_root">Your device is not rooted,but this app need root promission</string>
+    <string name="wait_downloading_fqrouter">Downloading fqrouter,please wait for downloading finish</string>
+    <string name="status_exiting">Exiting...</string>
     
 </resources>

@@ -57,20 +57,22 @@ public class Twittrouter extends Activity implements
 		public void handleMessage(Message message) {
 			if (message.arg1 == Activity.RESULT_OK) {
 				Log.i(TAG, "deploy success");
-				isServerRunning = true;
+				//isServerRunning = true;
 				//runTwittrouter();
 				/*
 				*/
-				if(ShellUtils.exists()) {
-					checkServerRunning();
-				} else {
-					runTwittrouter();
-					try {
-			            Thread.sleep(2000);
-			        } catch (InterruptedException e) {
-			            throw new RuntimeException(e);
-			        }
+				if(!ShellUtils.exists()) {
+					runTwittrouter();					
 				}
+				try {
+		            Thread.sleep(1000);
+		        } catch (InterruptedException e) {
+		            throw new RuntimeException(e);
+		        }
+				if(ShellUtils.exists()){
+					checkServerRunning();
+				}
+				
 								
 			} else {
 				Toast.makeText(Twittrouter.this, "deploy failed.",
@@ -130,11 +132,20 @@ public class Twittrouter extends Activity implements
     @Override
     protected void onResume() {
         super.onResume();
-        if(ShellUtils.exists()){
-        	checkServerRunning();        	
-        } else {
-        	runTwittrouter();
+        if(!ShellUtils.exists()){
+        	runTwittrouter();        	        	
         }
+        
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        
+        if(ShellUtils.exists()){
+        	checkServerRunning();
+        }
+        
     }
     
     public static String getMyVersion(Context context) {
@@ -152,24 +163,31 @@ public class Twittrouter extends Activity implements
     }
     
     private void checkServerRunning() {
-        if(isServerRunning){
+    	LogUtils.i("check Server Running");
         	new Thread(new Runnable() {
                 @Override
                 public void run() {
-                	try {
-                    	String content = HttpUtils.get("http://127.0.0.1:8888/echo");
-                    	if(!content.contains("helloworld")) {
-                    		runTwittrouter();
-                    	}
-                    		
-                    	LogUtils.i("Echo" + content);
-                    }  catch (Exception e) {
-                    	LogUtils.e("Server is not running", e);
-                    	runTwittrouter();
-                    }
+                	int retry = 10;
+                	while(retry-- > 0){
+                		try {
+                        	String content = HttpUtils.get("http://127.0.0.1:8888/echo");
+                        	if(content.contains("helloworld")) {
+                        		LogUtils.i("Echo " + content);
+                        		isServerRunning = true;
+                        		break;
+                        	}                       		
+                        	LogUtils.e("Echo " + content);
+                        	LogUtils.e("Server is not running or died");
+                        	Thread.sleep(500);
+                        }  catch (Exception e) {
+                        	LogUtils.e("Server is not running", e);
+                        }
+                		isServerRunning = false;
+                		
+                	}              	
+                	
                 }
-            }).start();          	
-        } 
+            }).start();      	
     }
     
     private void runTwittrouter() {
@@ -349,7 +367,7 @@ public class Twittrouter extends Activity implements
 								Toast.LENGTH_SHORT).show();
 					}					
 				}
-				if (!ShellUtils.exists(fqrouter)) {
+				else if (!ShellUtils.exists(fqrouter)) {
 					popupRunFqrouterAlert();
 				} else if(isServerRunning) {
 					if (Build.VERSION.SDK_INT < 14) {
@@ -360,6 +378,9 @@ public class Twittrouter extends Activity implements
 						showWebView();
 	                }
 					
+				} else{
+					Toast.makeText(Twittrouter.this, _(R.string.server_died_or_not_running),
+							Toast.LENGTH_SHORT).show();
 				}
 			}			
             

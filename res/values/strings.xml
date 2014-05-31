@@ -32,5 +32,6 @@
     <string name="device_not_root">Your device is not rooted,but this app need root promission</string>
     <string name="wait_downloading_fqrouter">Downloading fqrouter,please wait for downloading finish</string>
     <string name="status_exiting">Exiting...</string>
+    <string name="server_died_or_not_running">Server isnot running or died,please wait or restart</string>
     
 </resources>

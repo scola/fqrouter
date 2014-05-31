@@ -32,5 +32,6 @@
     <string name="device_not_root">你的设备没有root,这个应用需要root权限才能使用</string>
     <string name="wait_downloading_fqrouter">正在下载fqrouter,请耐心等待下载完成</string>
     <string name="status_exiting">正在退出...</string>
+    <string name="server_died_or_not_running">服务器未启动或已停止,请稍等或重启试试</string>
     
 </resources>

@@ -8,6 +8,8 @@ public class ShellUtils {
 	
 	public static File MANAGER_MAIN_PY = new File("/data/data/io.github.scola.twittrouter/twittrouter/twittrouter.py");
 	public static File PYTHON_LAUNCHER = new File("/data/data/io.github.scola.twittrouter/twittrouter/python-launcher.sh");
+	
+	private final static String TWITTROUTER_LOG = "/data/data/io.github.scola.twittrouter/twittrouter/twittrouter.log";
 
     private final static String[] BINARY_PLACES = {"/data/bin/", "/system/bin/", "/system/xbin/", "/sbin/",
             "/data/local/xbin/", "/data/local/bin/", "/system/sd/xbin/", "/system/bin/failsafe/",
@@ -199,9 +201,9 @@ public class ShellUtils {
 		
 		try {
 			if (new File("/data/data/fq.router2/busybox").exists()) {
-				ShellUtils.sudo("/data/data/fq.router2/busybox", "sh", PYTHON_LAUNCHER.getAbsolutePath(), MANAGER_MAIN_PY.getAbsolutePath());
+				ShellUtils.sudo("/data/data/fq.router2/busybox", "sh", PYTHON_LAUNCHER.getAbsolutePath(), MANAGER_MAIN_PY.getAbsolutePath(), ">", TWITTROUTER_LOG, "2>&1");
 			} else {
-				ShellUtils.sudo(PYTHON_LAUNCHER.getAbsolutePath(),MANAGER_MAIN_PY.getAbsolutePath());
+				ShellUtils.sudo(PYTHON_LAUNCHER.getAbsolutePath(),MANAGER_MAIN_PY.getAbsolutePath(), ">", TWITTROUTER_LOG, "2>&1");
 			}
 			
 		} catch (Exception e) {

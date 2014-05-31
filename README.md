@@ -8,6 +8,7 @@ How to build
  * jdk 1.6+
  * jre
  * Android SDK 17+
+
 Eclipse(packed with android SDK) -> File -> import -> Existing Projects into Workspace
 
 Usage

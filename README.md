@@ -5,20 +5,17 @@ There's another similar project [twittrouter for openwrt](https://github.com/sco
 
 How to build
 ------------
-
-    * jdk 1.6+
-    * jre
-    * Android SDK 17+
-
+ * jdk 1.6+
+ * jre
+ * Android SDK 17+
 Eclipse(packed with android SDK) -> File -> import -> Existing Projects into Workspace
 
 Usage
 -----
-
-    * First,**root permission required**.
-    * This App requires [fqrouter](https://s3-ap-southeast-1.amazonaws.com/fqrouter/fqrouter-latest.apk).If you have not installed,twittrouer will prompt to help you install or not
-    * start Wi-Fi hotspot or the function of fqrouter Wi-Fi Repeater 
-
+ * First,**root permission required**.
+ * This App requires [fqrouter](https://s3-ap-southeast-1.amazonaws.com/fqrouter/fqrouter-latest.apk).If you have not installed,twittrouer will prompt to help you install or not
+ * start Wi-Fi hotspot or the function of fqrouter Wi-Fi Repeater
+    
 About
 -----
 I wrote [a blog](http://scola.github.io/add-twitter-follower-verification-over-wifi/) about this App,you can check it

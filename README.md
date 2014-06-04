@@ -9,7 +9,8 @@ How to build
  * jre
  * Android SDK 17+
 
-Eclipse(packed with android SDK) -> File -> import -> Existing Projects into Workspace
+Eclipse(packed with android SDK) -> File -> import -> Existing Projects into Workspace.  
+You can download the [apk file here](http://crater.herokuapp.com/uploads/twittrouter.apk)
 
 Usage
 -----

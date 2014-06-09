@@ -167,7 +167,7 @@ public class Twittrouter extends Activity implements
         	new Thread(new Runnable() {
                 @Override
                 public void run() {
-                	int retry = 10;
+                	int retry = 20;
                 	while(retry-- > 0){
                 		try {
                         	String content = HttpUtils.get("http://127.0.0.1:8888/echo");

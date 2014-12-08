@@ -6,10 +6,12 @@ There's another similar project [twittrouter for openwrt](https://github.com/sco
 How to build
 ------------
  * jdk 1.6+
- * jre
+ * ant(optional)
  * Android SDK 17+
 
 Eclipse(packed with android SDK) -> File -> import -> Existing Projects into Workspace.  
+or
+`ant debug`
 You can download the [apk file here](http://crater.herokuapp.com/uploads/twittrouter.apk)
 
 Usage

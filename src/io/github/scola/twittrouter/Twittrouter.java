@@ -191,7 +191,7 @@ public class Twittrouter extends Activity implements
     }
     
     private void runTwittrouter() {
-    	if(ShellUtils.isRooted() && ShellUtils.exists(fqrouter)){
+    	if(ShellUtils.isRooted() && appRunningOrNot(fqrouter)){
         	new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -367,7 +367,7 @@ public class Twittrouter extends Activity implements
 								Toast.LENGTH_SHORT).show();
 					}					
 				}
-				else if (!ShellUtils.exists(fqrouter)) {
+				else if (!appRunningOrNot(fqrouter)) {
 					popupRunFqrouterAlert();
 				} else if(isServerRunning) {
 					if (Build.VERSION.SDK_INT < 14) {
